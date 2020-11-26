@@ -4,7 +4,7 @@ import { json } from "body-parser";
 const app = express();
 app.use(json());
 
-app.get("api/users/current", (_, res) => {
+app.get("/api/users/current", (_, res) => {
   res.send({ message: "Hi, there." });
 });
 

@@ -10,7 +10,7 @@ spec:
     - host: local.ticketing.com
       http:
         paths:
-          - path: /api/user/?(.*)
+          - path: /api/users/?(.*)
             backend:
               serviceName: auth-service
               servicePort: 8000
