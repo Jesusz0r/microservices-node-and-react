@@ -15,6 +15,7 @@ spec:
       containers:
         - name: auth
           image: jesusz0r/auth
+          # image: us.gcr.io/circular-genius-156714/auth
 ---
 apiVersion: v1
 kind: Service
