@@ -67,7 +67,7 @@ it("should return 400 when passing duplicate email", async () => {
     .expect(400);
 });
 
-it("should return user and jwt on body when signup is successful", async () => {
+it("should return status 201, user and jwt on body when signup is successful", async () => {
   const response = await request(app)
     .post("/api/users/signup")
     .send({
@@ -84,7 +84,7 @@ it("should return user and jwt on body when signup is successful", async () => {
   expect(typeof response.body.token).toBe("string");
 });
 
-it("should return a cookie when signup is successful", async () => {
+it("should return 201 and a cookie when signup is successful", async () => {
   const response = await request(app)
     .post("/api/users/signup")
     .send({
