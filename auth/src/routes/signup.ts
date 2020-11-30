@@ -1,9 +1,10 @@
 import express, { Request, Response } from "express";
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
 import jwt from "jsonwebtoken";
 
+import { BadRequestError } from "../errors";
 import { User } from "../models";
-import { RequestValidationError, BadRequestError } from "../errors";
+import { validateRequest } from "../middlewares";
 
 const router = express.Router();
 
@@ -16,13 +17,8 @@ router.post(
       .isLength({ min: 5 })
       .withMessage("Password must have at least 5 caracters."),
   ],
+  validateRequest,
   async (req: Request, res: Response) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      throw new RequestValidationError(errors.array());
-    }
-
     const { email, password } = req.body;
     const existingUser = await User.findOne({ email });
 
@@ -35,7 +31,7 @@ router.post(
     await user.save();
 
     const token = jwt.sign(
-      { email: user.email, _id: user._id },
+      { email: user.email, id: user.id },
       process.env.JWT_SECRET!,
       {
         expiresIn: "7 days",
@@ -43,7 +39,7 @@ router.post(
     );
 
     req.session = { ...req.session, token };
-    res.send({ user: user.toJSON(), token });
+    res.status(201).send({ user: user.toJSON(), token });
   }
 );
 
