@@ -37,7 +37,7 @@ router.post(
       }
     );
 
-    req.session = { ...req.session, token };
+    req.session = { ...req.session, jwt: token };
     res.status(200).send({ token, user });
   }
 );
