@@ -27,16 +27,29 @@ interface UserModel extends mongoose.Model<UserDocument> {
   hashPassword(password: string): UserDocument;
 }
 
-const userSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
+const userSchema = new mongoose.Schema(
+  {
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
   },
-  password: {
-    type: String,
-    required: true,
-  },
-});
+  {
+    toJSON: {
+      transform(doc, ret) {
+        ret.id = ret._id;
+
+        delete ret.password;
+        delete ret.__v;
+        delete ret._id;
+      },
+    },
+  }
+);
 
 // Creamos esta funcion como "envoltorio" para poder decirle a TypeScript el tipo de interfaz que debe tener un usuario, es decir,
 // las propiedades y usamos esta nueva función para crear los nuevos usuarios de ahora en adelante. De esta forma cada vez que

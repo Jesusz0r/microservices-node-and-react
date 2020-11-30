@@ -3,14 +3,24 @@ import "express-async-errors";
 import { json, urlencoded } from "body-parser";
 import morgan from "morgan";
 import mongoose from "mongoose";
+import cookieSession from "cookie-session";
 
 import { authRoutes } from "./routes";
 import { errorHandler } from "./middlewares";
 import { NotFoundError } from "./errors";
 
 const app = express();
+
+app.set("trust proxy", true);
 app.use(json());
 app.use(urlencoded({ extended: true }));
+app.use(
+  cookieSession({
+    name: "session",
+    signed: false,
+    secure: true,
+  })
+);
 app.use(morgan("dev"));
 
 app.use("/api/users", authRoutes);
@@ -22,6 +32,10 @@ app.all("*", (req, res, next) => {
 
   res.status(notFoundError.statusCode).send({ errors });
 });
+
+if (!process.env.JWT_SECRET) {
+  throw new Error("");
+}
 
 app.listen(8000, async () => {
   console.log("Listening on port: 8000!");

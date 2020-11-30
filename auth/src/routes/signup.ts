@@ -1,5 +1,6 @@
 import express, { Request, Response } from "express";
 import { body, validationResult } from "express-validator";
+import jwt from "jsonwebtoken";
 
 import { User } from "../models";
 import { RequestValidationError, BadRequestError } from "../errors";
@@ -33,7 +34,16 @@ router.post(
     await user.hashPassword(password);
     await user.save();
 
-    res.send({ user });
+    const token = jwt.sign(
+      { email: user.email, _id: user._id },
+      process.env.JWT_SECRET!,
+      {
+        expiresIn: "7 days",
+      }
+    );
+
+    req.session = { ...req.session, token };
+    res.send({ user: user.toJSON(), token });
   }
 );
 
