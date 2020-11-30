@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "../../app";
 
-it("should return 200 and current user when there is an user authenticated", async () => {
+it("should return 200 and current user when there is a user authenticated", async () => {
   const email = "test@test.com";
   const signupResponse = await request(app)
     .post("/api/users/signup")
@@ -24,6 +24,10 @@ it("should return 200 and current user when there is an user authenticated", asy
   expect(response.body.user.id).toBe(id);
 });
 
-it("should return 401 when there is not an user authenticated", async () => {
-  await request(app).get("/api/users/current").expect(401);
+it("should return 401 and an error when there is not user authenticated", async () => {
+  const response = await request(app).get("/api/users/current").expect(401);
+
+  expect(response.body).toHaveProperty("errors");
+  expect(response.body.errors[0]).toHaveProperty("message");
+  expect(response.body.errors[0].message).toBe("User is invalid.");
 });
