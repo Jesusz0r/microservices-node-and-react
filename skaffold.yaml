@@ -18,4 +18,4 @@ build:
       sync:
         manual:
           - src: "./src/**/*.ts"
-            dest: "app/"
+            dest: "app"
