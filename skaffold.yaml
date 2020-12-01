@@ -9,18 +9,18 @@ build:
     push: false
   artifacts:
     - image: jesusz0r/auth
-      context: ./auth
+      context: auth
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "./src/**/*.ts"
-            dest: "app/"
+          - src: "src/**/*.ts"
+            dest: .
     - image: jesusz0r/client
-      context: ./client
+      context: client
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
           - src: "**/*.js"
-            dest: "app/"
+            dest: .
