@@ -11,11 +11,8 @@ const router = express.Router();
 router.post(
   "/signup",
   [
-    body("email").isEmail().withMessage("Must use a valid email."),
-    body("password")
-      .trim()
-      .isLength({ min: 5 })
-      .withMessage("Password must have at least 5 caracters."),
+    body("email").isEmail().withMessage("Email is invalid."),
+    body("password").isLength({ min: 5 }).withMessage("Password is invalid."),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
@@ -23,7 +20,7 @@ router.post(
     const existingUser = await User.findOne({ email });
 
     if (existingUser) {
-      throw new BadRequestError("UserAlreadyExistsError");
+      throw new BadRequestError("Invalid credentials. Please try again.");
     }
 
     const user = User.build({ email, password });

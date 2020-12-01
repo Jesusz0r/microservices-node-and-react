@@ -11,8 +11,8 @@ const router = express.Router();
 router.post(
   "/signin",
   [
-    body("email").isEmail().withMessage("Email is required."),
-    body("password").isLength({ min: 5 }).withMessage("Password is incorrect."),
+    body("email").isEmail().withMessage("Email is invalid."),
+    body("password").isLength({ min: 5 }).withMessage("Password is invalid."),
   ],
   validateRequest,
   async (req: Request, res: Response) => {
