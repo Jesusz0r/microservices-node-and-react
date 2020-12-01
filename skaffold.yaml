@@ -5,9 +5,6 @@ deploy:
     manifests:
       - ./infra/k8s/*
 build:
-  tagPolicy:
-    gitCommit:
-      variant: Tags
   local:
     push: false
   artifacts:
@@ -18,4 +15,12 @@ build:
       sync:
         manual:
           - src: "./src/**/*.ts"
-            dest: "app"
+            dest: "app/"
+    - image: jesusz0r/client
+      context: ./client
+      docker:
+        dockerfile: Dockerfile
+      sync:
+        manual:
+          - src: "**/*.js"
+            dest: "app/"
