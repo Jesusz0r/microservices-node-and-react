@@ -27,6 +27,8 @@ export const verifyUser = (req: Request, res: Response, next: NextFunction) => {
 
     req.user = user;
   } catch (error) {
+    req.session = { ...req.session, jwt: token };
+
     throw new NotAuthorizedError("User is invalid.");
   }
 
