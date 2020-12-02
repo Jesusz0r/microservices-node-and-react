@@ -1,6 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-
-import { CustomError } from "../errors";
+import { CustomError } from "@encuentradepa/common";
 
 // Si recibe 4 argumentos significa que es para capturar los errores
 export const errorHandler = (

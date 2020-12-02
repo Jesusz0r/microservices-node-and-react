@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
-
-import { NotAuthorizedError } from "../errors";
+import { NotAuthorizedError } from "@encuentradepa/common";
 
 interface UserPayload {
   id: string;

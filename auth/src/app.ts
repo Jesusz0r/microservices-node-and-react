@@ -3,10 +3,10 @@ import "express-async-errors";
 import { json, urlencoded } from "body-parser";
 import morgan from "morgan";
 import cookieSession from "cookie-session";
+import { NotFoundError } from "@encuentradepa/common";
 
 import { authRoutes } from "./routes";
 import { errorHandler } from "./middlewares";
-import { NotFoundError } from "./errors";
 
 const app = express();
 
