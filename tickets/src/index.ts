@@ -4,8 +4,12 @@ import { app } from "./app";
 
 async function start() {
   try {
+    if (!process.env.MONGO_URI) {
+      throw new Error("MONGO_URI environment variable is required.");
+    }
+
     await app.listen(8000);
-    await mongoose.connect("mongodb://tickets-mongo-service:27017/tickets", {
+    await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,

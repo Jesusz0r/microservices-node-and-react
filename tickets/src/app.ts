@@ -22,6 +22,7 @@ app.use(morgan("dev"));
 app.all("*", (req, res, next) => {
   const notFoundError = new NotFoundError();
   const errors = notFoundError.serializeErrors();
+
   res.status(notFoundError.statusCode).send({ errors });
 });
 

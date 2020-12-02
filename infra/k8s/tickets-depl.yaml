@@ -15,6 +15,9 @@ spec:
       containers:
         - name: tickets
           image: jesusz0r/tickets
+          env:
+            - name: MONGO_URI
+              value: "mongodb://tickets-mongo-service:27017/tickets"
 ---
 apiVersion: v1
 kind: Service
