@@ -1,30 +1,31 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: client-deployment
+  name: tickets-deployment
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: client
+      app: tickets
   template:
     metadata:
       labels:
-        app: client
+        app: tickets
     spec:
       containers:
-        - name: client
-          image: jesusz0r/client
+        - name: tickets
+          image: jesusz0r/tickets
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: client-service
+  name: tickets-service
 spec:
+  type: ClusterIP
   selector:
-    app: client
+    app: tickets
   ports:
-    - name: client
+    - name: tickets
       protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 8000
+      targetPort: 8000
