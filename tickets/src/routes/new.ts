@@ -26,7 +26,7 @@ router.post(
         price,
       });
 
-      return res.send({ ticket });
+      return res.status(201).send({ ticket });
     } catch (error) {
       throw new BadRequestError(error.message);
     }

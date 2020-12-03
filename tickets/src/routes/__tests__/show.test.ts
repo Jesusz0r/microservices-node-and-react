@@ -20,7 +20,7 @@ it("should return ticket if found", async () => {
   const response = await request(app)
     .post("/api/tickets")
     .send(ticket)
-    .expect(200);
+    .expect(201);
 
   const createdTicket = await request(app)
     .get(`/api/tickets/${response.body.ticket.id}`)

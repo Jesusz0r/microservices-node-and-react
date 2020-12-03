@@ -11,7 +11,7 @@ it("should create a new ticket succesfuly", async () => {
   const response = await request(app)
     .post("/api/tickets")
     .send(ticket)
-    .expect(200);
+    .expect(201);
 
   expect(response.body).toHaveProperty("ticket");
   expect(response.body.ticket).toHaveProperty("title");
