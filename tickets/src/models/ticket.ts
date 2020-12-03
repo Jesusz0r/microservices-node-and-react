@@ -46,11 +46,11 @@ const ticketSchema = new mongoose.Schema(
   }
 );
 
-ticketSchema.statics = {
-  build: function (ticket: TicketAttributes): TicketDocument {
-    return new this(ticket);
-  },
-};
+// ticketSchema.static.build = function (
+//   ticket: TicketAttributes
+// ): TicketDocument {
+//   return new this(ticket);
+// };
 
 const Ticket = mongoose.model<TicketDocument, TicketModel>(
   "Ticket",
