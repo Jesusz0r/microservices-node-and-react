@@ -21,8 +21,6 @@ export const verifyUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("req:", req.session);
-
   const token = req.session?.jwt || req.headers?.authorization?.split(" ")[1];
 
   if (!token) {

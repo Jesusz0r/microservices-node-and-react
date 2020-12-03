@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import bcrypt, { hash } from "bcrypt";
+import bcrypt from "bcrypt";
 
 // Interfaz que define las propiedades necesarias para crear un nuevo usuario
 interface UserAttributes {

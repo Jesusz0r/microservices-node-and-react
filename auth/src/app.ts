@@ -26,6 +26,8 @@ app.use("/api/users", authRoutes);
 app.use(errorHandler);
 
 app.all("*", (req, res, next) => {
+  console.log("req:", req);
+
   const notFoundError = new NotFoundError();
   const errors = notFoundError.serializeErrors();
 
