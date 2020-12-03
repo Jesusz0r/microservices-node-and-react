@@ -5,6 +5,9 @@ import morgan from "morgan";
 import cookieSession from "cookie-session";
 import { NotFoundError } from "@encuentradepa/common";
 
+import routes from "./routes";
+import { errorHandler } from "./middlewares";
+
 const app = express();
 
 app.set("trust proxy", true);
@@ -18,6 +21,9 @@ app.use(
   })
 );
 app.use(morgan("dev"));
+
+app.use("/api/tickets", routes);
+app.use(errorHandler);
 
 app.all("*", (req, res, next) => {
   const notFoundError = new NotFoundError();
