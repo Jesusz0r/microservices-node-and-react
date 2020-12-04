@@ -15,11 +15,7 @@ interface TicketDocument extends mongoose.Document {
   userId: mongoose.Types.ObjectId;
 }
 
-interface TicketModel extends mongoose.Model<TicketDocument> {
-  build(user: TicketAttributes): TicketDocument;
-}
-
-const ticketSchema = new mongoose.Schema(
+const ticketSchema: mongoose.Schema = new mongoose.Schema(
   {
     title: {
       type: String,
@@ -46,15 +42,6 @@ const ticketSchema = new mongoose.Schema(
   }
 );
 
-// ticketSchema.static.build = function (
-//   ticket: TicketAttributes
-// ): TicketDocument {
-//   return new this(ticket);
-// };
-
-const Ticket = mongoose.model<TicketDocument, TicketModel>(
-  "Ticket",
-  ticketSchema
-);
+const Ticket = mongoose.model<TicketDocument>("Ticket", ticketSchema);
 
 export { Ticket };
