@@ -2,8 +2,10 @@ import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { NotFoundError, validateRequest } from "@encuentradepa/common";
 
+import { natsWrapper } from "../nats-wrapper";
 import { verifyUser, checkTicketOwnership } from "../middlewares";
 import { Ticket } from "../models";
+import { Publishers } from "../events";
 
 const router = express.Router();
 
@@ -28,6 +30,16 @@ router.put(
     if (!ticket) {
       throw new NotFoundError();
     }
+
+    const ticketUpdatedPublisher = new Publishers.TicketUpdated(
+      natsWrapper.client
+    );
+    ticketUpdatedPublisher.publish({
+      id: ticket.id,
+      userId: String(ticket.userId),
+      title: ticket.title,
+      price: ticket.price,
+    });
 
     res.send({ ticket });
   }

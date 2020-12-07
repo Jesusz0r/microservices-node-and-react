@@ -1,10 +1,12 @@
-import { BadRequestError, RequestValidationError } from "@encuentradepa/common";
+import { BadRequestError } from "@encuentradepa/common";
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
 import { validateRequest } from "@encuentradepa/common";
 
+import { natsWrapper } from "../nats-wrapper";
 import { Ticket } from "../models";
 import { verifyUser } from "../middlewares";
+import { Publishers } from "../events";
 
 const router = express.Router();
 
@@ -24,6 +26,16 @@ router.post(
         userId,
         title,
         price,
+      });
+
+      const ticketCreatedPublisher = new Publishers.TicketCreated(
+        natsWrapper.client
+      );
+      ticketCreatedPublisher.publish({
+        id: ticket.id,
+        userId: String(ticket.userId),
+        title: ticket.title,
+        price: ticket.price,
       });
 
       return res.status(201).send({ ticket });
