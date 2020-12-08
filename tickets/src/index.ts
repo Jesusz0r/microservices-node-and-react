@@ -8,13 +8,22 @@ async function start() {
     if (!process.env.MONGO_URI) {
       throw new Error("MONGO_URI environment variable is required.");
     }
+    if (!process.env.NATS_CLUSTER_ID) {
+      throw new Error("NATS_CLUSTER_ID environment variable is required.");
+    }
+    if (!process.env.NATS_CLIENT_ID) {
+      throw new Error("NATS_CLIENT_ID environment variable is required.");
+    }
+    if (!process.env.NATS_URI) {
+      throw new Error("NATS_URI environment variable is required.");
+    }
 
     await app.listen(8000);
 
     const nats = await natsWrapper.connect(
-      "ticketing",
-      "tickets123",
-      "http://nats-service:4222"
+      process.env.NATS_CLUSTER_ID,
+      process.env.NATS_CLIENT_ID,
+      process.env.NATS_URI
     );
     nats.on("close", () => {
       console.log("NATS connection closed!");
