@@ -12,23 +12,10 @@ declare global {
 }
 
 const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
-  if (process.env.NODE_ENV === "test") {
-    req.user = {
-      email: "test@test.com",
-      id: new mongoose.Types.ObjectId(),
-    };
-
-    return next();
-  }
-
   try {
     const response = await axios.get(
       "http://auth-service:8000/api/users/current",
-      {
-        headers: {
-          Cookie: req.headers.cookie,
-        },
-      }
+      { headers: { Cookie: req.headers.cookie } }
     );
 
     if (!response.data.user) {

@@ -1,9 +1,13 @@
+import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
 
 import { app } from "../app";
 
 let mongo: any;
+
+jest.mock("../nats-wrapper");
+jest.mock("../middlewares");
 
 beforeAll(async () => {
   process.env.JWT_SECRET = "asdasd";

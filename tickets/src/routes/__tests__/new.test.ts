@@ -1,6 +1,11 @@
 import request from "supertest";
 
 import { app } from "../../app";
+import { natsWrapper } from "../../nats-wrapper";
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 it('should have a "post" route listening on /api/tickets', async () => {
   await request(app).post("/api/tickets").send({}).expect(400);
@@ -19,6 +24,8 @@ it("should create a new ticket succesfuly", async () => {
   expect(response.body.ticket).toHaveProperty("price");
   expect(response.body.ticket.price).toBe(ticket.price);
   expect(response.body.ticket).toHaveProperty("id");
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
 
 it("should not create a new ticket if invalid title is provided", async () => {

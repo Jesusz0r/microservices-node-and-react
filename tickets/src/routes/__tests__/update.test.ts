@@ -2,6 +2,11 @@ import request from "supertest";
 import mongoose from "mongoose";
 
 import { app } from "../../app";
+import { natsWrapper } from "../../nats-wrapper";
+
+beforeEach(() => {
+  jest.clearAllMocks();
+});
 
 it("should not update a ticket if it does not exists", async () => {
   const id = new mongoose.Types.ObjectId();
@@ -32,6 +37,8 @@ it("should succesfuly update title of an existing ticket", async () => {
   expect(response.body.ticket.title).toBe(newTitle);
   expect(response.body.ticket).toHaveProperty("price");
   expect(response.body.ticket.price).toBe(ticket.price);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
 
 it("should succesfuly update price of an existing ticket", async () => {
