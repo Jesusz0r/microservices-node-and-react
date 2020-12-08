@@ -16,6 +16,15 @@ spec:
         - name: tickets
           image: jesusz0r/tickets
           env:
+            - name: NATS_CLUSTER_ID
+              value: "ticketing"
+            - name: NATS_CLIENT_ID
+              # Esto se usa para sacar el nombre del pod.
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: NATS_URI
+              value: "http://nats-service:4222"
             - name: MONGO_URI
               value: "mongodb://tickets-mongo-service:27017/tickets"
 ---
