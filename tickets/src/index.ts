@@ -27,6 +27,7 @@ async function start() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
+      useFindAndModify: false,
     });
 
     console.log("Server is up and running on port: 8000");
