@@ -1,18 +1,22 @@
-import mongoose from "mongoose";
+import mongoose, { Document, Model } from "mongoose";
 
 // // Interfaz que define las propiedades necesarias para crear un nuevo usuario
 interface TicketAttributes {
   title: string;
   price: number;
-  userId: mongoose.Types.ObjectId;
+  userId: mongoose.Schema.Types.ObjectId;
 }
 
 // // Interfaz que describe las propiedades que tendrá el documento creado
 // // cuando creamos un nuevo usuario en mongo
-interface TicketDocument extends mongoose.Document {
+interface TicketDocument extends Document {
   title: string;
   price: number;
-  userId: mongoose.Types.ObjectId;
+  userId: mongoose.Schema.Types.ObjectId;
+}
+
+interface TicketModel extends Model<TicketDocument> {
+  build(ticket: TicketAttributes): TicketDocument;
 }
 
 const ticketSchema: mongoose.Schema = new mongoose.Schema(
@@ -26,7 +30,7 @@ const ticketSchema: mongoose.Schema = new mongoose.Schema(
       required: true,
     },
     userId: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       required: true,
     },
   },
@@ -41,7 +45,15 @@ const ticketSchema: mongoose.Schema = new mongoose.Schema(
     },
   }
 );
+ticketSchema.statics = {
+  build: function (ticket: TicketAttributes): TicketDocument {
+    return this.create({ ticket });
+  },
+};
 
-const Ticket = mongoose.model<TicketDocument>("Ticket", ticketSchema);
+const Ticket = mongoose.model<TicketDocument, TicketModel>(
+  "Ticket",
+  ticketSchema
+);
 
 export { Ticket };
