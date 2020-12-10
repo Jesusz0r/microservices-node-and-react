@@ -1,11 +1,11 @@
 import mongoose, { Document, Model, ObjectId } from "mongoose";
-import { Event } from "@encuentradepa/common";
+import { Events } from "@encuentradepa/common";
 
 import { TicketDocument } from "./ticket";
 
 interface OrderAttributes {
   userId: ObjectId;
-  status: Event.Status.OrderStatus;
+  status: Events.Status.OrderStatus;
   expiresAt: Date;
   ticket: TicketDocument;
 }
@@ -27,8 +27,8 @@ const ordersSchema = new mongoose.Schema(
     status: {
       type: String,
       required: true,
-      enum: Object.values(Event.Status.OrderStatus),
-      default: Event.Status.OrderStatus.Created,
+      enum: Object.values(Events.Status.OrderStatus),
+      default: Events.Status.OrderStatus.Created,
     },
     expiresAt: { type: mongoose.Schema.Types.Date },
     ticket: {

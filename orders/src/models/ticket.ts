@@ -1,4 +1,7 @@
 import mongoose, { Document, Model } from "mongoose";
+import { Events } from "@encuentradepa/common";
+
+import { Order } from "./order";
 
 interface TicketAttributes {
   title: string;
@@ -8,6 +11,8 @@ interface TicketAttributes {
 interface TicketDocument extends Document {
   title: string;
   price: number;
+
+  isReserved(): Promise<boolean>;
 }
 
 interface TicketModel extends Model<TicketDocument> {
@@ -39,6 +44,22 @@ const ticketSchema = new mongoose.Schema(
 ticketSchema.statics = {
   build: function (ticket: TicketAttributes): TicketDocument {
     return this.create(ticket);
+  },
+};
+ticketSchema.methods = {
+  isReserved: async function (): Promise<boolean> {
+    const isReserved = await Order.findOne({
+      ticket: this,
+      status: {
+        $in: [
+          Events.Status.OrderStatus.AwaitingPayment,
+          Events.Status.OrderStatus.Created,
+          Events.Status.OrderStatus.Completed,
+        ],
+      },
+    });
+
+    return !!isReserved;
   },
 };
 
