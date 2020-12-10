@@ -3,10 +3,9 @@ import "express-async-errors";
 import { json, urlencoded } from "body-parser";
 import morgan from "morgan";
 import cookieSession from "cookie-session";
-import { NotFoundError } from "@encuentradepa/common";
+import { NotFoundError, errorHandler } from "@encuentradepa/common";
 
 import routes from "./routes";
-// import { errorHandler } from "./middlewares";
 
 const app = express();
 
@@ -23,7 +22,7 @@ app.use(
 app.use(morgan("dev"));
 
 app.use("/api/orders", routes);
-// app.use(errorHandler);
+app.use(errorHandler);
 
 app.all("*", (req, res, next) => {
   const notFoundError = new NotFoundError();
