@@ -22,7 +22,7 @@ router.post(
   ],
   validateRequest,
   async (req: Request, res: Response) => {
-    const { userId } = req.user.id!;
+    const { id: userId } = req.user!;
     const { ticketId } = req.body;
     const ticket = await Ticket.findOne({ _id: ticketId });
 
@@ -41,14 +41,18 @@ router.post(
       expiresAt.getSeconds() + Number(EXPIRATION_WINDOW_SECONDS)
     );
 
-    const order = await Order.create({
-      userId,
-      status: Events.Status.OrderStatus.Created,
-      expiresAt,
-      ticket,
-    });
+    try {
+      const order = await Order.create({
+        userId,
+        status: Events.Status.OrderStatus.Created,
+        expiresAt,
+        ticket,
+      });
 
-    res.status(201).send({ order });
+      res.status(201).send({ order });
+    } catch (error) {
+      throw new Errors.BadRequestError();
+    }
   }
 );
 

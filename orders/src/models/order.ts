@@ -4,14 +4,14 @@ import { Events } from "@encuentradepa/common";
 import { TicketDocument } from "./ticket";
 
 interface OrderAttributes {
-  userId: ObjectId;
+  userId: string;
   status: Events.Status.OrderStatus;
   expiresAt: Date;
   ticket: TicketDocument;
 }
 
 interface OrderDocument extends Document {
-  userId: ObjectId;
+  userId: string;
   status: string;
   expiresAt: Date;
   ticket: TicketDocument;
