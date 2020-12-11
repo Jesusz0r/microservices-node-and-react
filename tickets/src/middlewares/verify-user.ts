@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import axios from "axios";
-import { BadRequestError, NotAuthorizedError } from "@encuentradepa/common";
+import { Errors } from "@encuentradepa/common";
 
 declare global {
   namespace Express {
@@ -19,14 +19,14 @@ const verifyUser = async (req: Request, res: Response, next: NextFunction) => {
     );
 
     if (!response.data.user) {
-      throw new NotAuthorizedError("Invalid credentials.");
+      throw new Errors.NotAuthorizedError("Invalid credentials.");
     }
 
     req.user = response.data.user;
 
     next();
   } catch (error) {
-    throw new BadRequestError(error.message);
+    throw new Errors.BadRequestError(error.message);
   }
 };
 

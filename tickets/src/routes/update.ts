@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
-import { NotFoundError, validateRequest } from "@encuentradepa/common";
+import { Errors, Middlewares } from "@encuentradepa/common";
 
 import { natsWrapper } from "../nats-wrapper";
 import { verifyUser, checkTicketOwnership } from "../middlewares";
@@ -17,7 +17,7 @@ router.put(
   ],
   verifyUser,
   checkTicketOwnership,
-  validateRequest,
+  Middlewares.validateRequest,
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const { title, price } = req.body;
@@ -28,7 +28,7 @@ router.put(
     );
 
     if (!ticket) {
-      throw new NotFoundError();
+      throw new Errors.NotFoundError();
     }
 
     const ticketUpdatedPublisher = new Publishers.TicketUpdated(

@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { NotFoundError } from "@encuentradepa/common";
+import { Errors } from "@encuentradepa/common";
 
 import { Ticket } from "../models";
 
@@ -10,7 +10,7 @@ router.get("/:id", async (req: Request, res: Response) => {
   const ticket = await Ticket.findOne({ _id: id });
 
   if (!ticket) {
-    throw new NotFoundError();
+    throw new Errors.NotFoundError();
   }
 
   res.send({ ticket });

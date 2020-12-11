@@ -1,8 +1,5 @@
-import { NextFunction, Request, Response } from "express";
 import mongoose from "mongoose";
 import { MongoMemoryServer } from "mongodb-memory-server";
-
-import { app } from "../app";
 
 let mongo: any;
 

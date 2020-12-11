@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { NotAuthorizedError } from "@encuentradepa/common";
+import { Errors } from "@encuentradepa/common";
 
 import { Ticket } from "../models";
 
@@ -13,7 +13,7 @@ const checkTicketOwnership = async (
   const ticket = await Ticket.findOne({ _id: id, userId });
 
   if (!ticket) {
-    throw new NotAuthorizedError("Unauthorized.");
+    throw new Errors.NotAuthorizedError("Unauthorized.");
   }
 
   next();

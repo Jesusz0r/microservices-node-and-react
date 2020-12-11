@@ -1,7 +1,6 @@
-import { BadRequestError } from "@encuentradepa/common";
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
-import { validateRequest } from "@encuentradepa/common";
+import { Middlewares, Errors, Events } from "@encuentradepa/common";
 
 import { natsWrapper } from "../nats-wrapper";
 import { Ticket } from "../models";
@@ -16,7 +15,7 @@ router.post(
     body("title").trim().isLength({ min: 5 }).withMessage("Title is invalid."),
     body("price").trim().isFloat({ gt: 0 }).withMessage("Price is invalid."),
   ],
-  validateRequest,
+  Middlewares.validateRequest,
   verifyUser,
   async (req: Request, res: Response) => {
     try {
@@ -40,7 +39,7 @@ router.post(
 
       return res.status(201).send({ ticket });
     } catch (error) {
-      throw new BadRequestError(error.message);
+      throw new Errors.BadRequestError(error.message);
     }
   }
 );
