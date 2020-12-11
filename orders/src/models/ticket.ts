@@ -4,11 +4,13 @@ import { Events } from "@encuentradepa/common";
 import { Order } from "./order";
 
 interface TicketAttributes {
+  id: string;
   title: string;
   price: number;
 }
 
 interface TicketDocument extends Document {
+  id: string;
   title: string;
   price: number;
 
@@ -43,7 +45,9 @@ const ticketSchema = new mongoose.Schema(
 
 ticketSchema.statics = {
   build: function (ticket: TicketAttributes): TicketDocument {
-    return this.create(ticket);
+    const { id, ...data } = ticket;
+
+    return this.create({ _id: id, ...data });
   },
 };
 ticketSchema.methods = {
