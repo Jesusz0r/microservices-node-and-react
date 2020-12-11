@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
 import mongoose from "mongoose";
 import { body } from "express-validator";
-import { Errors, Events, validateRequest } from "@encuentradepa/common";
+import { Errors, Events, Middlewares } from "@encuentradepa/common";
 
 import { Order, Ticket } from "../models";
 import { verifyUser } from "../middlewares";
@@ -20,7 +20,7 @@ router.post(
       .custom((input: string) => mongoose.Types.ObjectId.isValid(input))
       .withMessage("tickedId is invalid."),
   ],
-  validateRequest,
+  Middlewares.validateRequest,
   async (req: Request, res: Response) => {
     const { id: userId } = req.user!;
     const { ticketId } = req.body;

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { NotAuthorizedError } from "@encuentradepa/common";
+import { Errors } from "@encuentradepa/common";
 
 import { Order } from "../models";
 
@@ -20,10 +20,8 @@ const checkOrderOwnership = async (
   const { id: userId } = req.user;
   const order = await Order.findOne({ _id: id, userId });
 
-  console.log("order:", order);
-
   if (!order) {
-    throw new NotAuthorizedError("Unauthorized.");
+    throw new Errors.NotAuthorizedError("Unauthorized.");
   }
 
   req.order = order;

@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import { body } from "express-validator";
 import { Errors } from "@encuentradepa/common";
 
-import { checkOrderOwnership, verifyUser } from "../middlewares";
+import { verifyUser } from "../middlewares";
 import { Order } from "../models";
 
 const router = express.Router();

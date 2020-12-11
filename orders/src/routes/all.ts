@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import { Errors } from "@encuentradepa/common";
 
 import { verifyUser } from "../middlewares";
 import { Order } from "../models";
