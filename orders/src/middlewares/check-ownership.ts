@@ -1,22 +1,34 @@
 import { Request, Response, NextFunction } from "express";
 import { NotAuthorizedError } from "@encuentradepa/common";
 
-// import { Ticket } from "../models";
+import { Order } from "../models";
 
-const checkTicketOwnership = async (
+declare global {
+  namespace Express {
+    interface Request {
+      order?: any;
+    }
+  }
+}
+
+const checkOrderOwnership = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   const { id } = req.params;
   const { id: userId } = req.user;
-  // const ticket = await Ticket.findOne({ _id: id, userId });
+  const order = await Order.findOne({ _id: id, userId });
 
-  // if (!ticket) {
-  //   throw new NotAuthorizedError("Unauthorized.");
-  // }
+  console.log("order:", order);
+
+  if (!order) {
+    throw new NotAuthorizedError("Unauthorized.");
+  }
+
+  req.order = order;
 
   next();
 };
 
-export { checkTicketOwnership };
+export { checkOrderOwnership };

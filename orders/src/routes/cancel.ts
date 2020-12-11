@@ -3,12 +3,12 @@ import mongoose from "mongoose";
 import { body } from "express-validator";
 import { Errors } from "@encuentradepa/common";
 
-import { checkOrderOwnership, verifyUser } from "../middlewares";
+import { verifyUser } from "../middlewares";
 import { Order } from "../models";
 
 const router = express.Router();
 
-router.get(
+router.patch(
   "/:id",
   verifyUser,
   [
@@ -19,9 +19,9 @@ router.get(
       .withMessage("tickedId is invalid."),
   ],
   async (req: Request, res: Response) => {
-    const { id } = req.params;
     const { id: userId } = req.user;
-    const order = await Order.findOne({ _id: id }).populate("ticket");
+    const { id } = req.params;
+    const order = await Order.findOne({ _id: id });
 
     if (!order) {
       throw new Errors.NotFoundError();
@@ -33,8 +33,10 @@ router.get(
       );
     }
 
-    res.send({ order });
+    const updatedOrder = await order.setCancelStatus();
+
+    res.send({ order: updatedOrder });
   }
 );
 
-export { router as showRoute };
+export { router as cancelRoute };

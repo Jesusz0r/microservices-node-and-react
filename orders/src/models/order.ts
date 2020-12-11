@@ -15,6 +15,8 @@ interface OrderDocument extends Document {
   status: string;
   expiresAt: Date;
   ticket: TicketDocument;
+
+  setCancelStatus(): Promise<OrderDocument>;
 }
 
 interface OrderModel extends Model<OrderDocument> {
@@ -51,6 +53,13 @@ const ordersSchema = new mongoose.Schema(
 ordersSchema.statics = {
   build: function (order: OrderAttributes): OrderDocument {
     return this.create(order);
+  },
+};
+ordersSchema.methods = {
+  setCancelStatus: async function (): Promise<OrderDocument> {
+    this.set("status", Events.Status.OrderStatus.Cancelled);
+
+    return this.save();
   },
 };
 

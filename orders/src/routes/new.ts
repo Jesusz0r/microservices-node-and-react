@@ -41,18 +41,14 @@ router.post(
       expiresAt.getSeconds() + Number(EXPIRATION_WINDOW_SECONDS)
     );
 
-    try {
-      const order = await Order.create({
-        userId,
-        status: Events.Status.OrderStatus.Created,
-        expiresAt,
-        ticket,
-      });
+    const order = await Order.build({
+      userId,
+      status: Events.Status.OrderStatus.Created,
+      expiresAt,
+      ticket,
+    });
 
-      res.status(201).send({ order });
-    } catch (error) {
-      throw new Errors.BadRequestError();
-    }
+    res.status(201).send({ order });
   }
 );
 
