@@ -18,7 +18,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@encuentradepa/common": "0.0.5",
+    "@encuentradepa/common": "0.0.6",
     "@types/cookie-session": "^2.0.41",
     "@types/express": "^4.17.9",
     "@types/morgan": "^1.9.2",
