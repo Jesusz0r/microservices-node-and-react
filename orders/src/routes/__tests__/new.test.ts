@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import { app } from "../../app";
 import { Order, Ticket } from "../../models";
 import { Events } from "@encuentradepa/common";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("returns an error if the ticket we are using to create an order does not exists", async () => {
   const unexistingTicketId = new mongoose.Types.ObjectId();
@@ -55,4 +56,18 @@ it("succesfuly reserves a ticket", async () => {
   expect(response.body.order.ticket.price).toBe(ticket.price);
   expect(response.body.order.ticket).toHaveProperty("id");
   expect(response.body.order.ticket.id).toBe(String(ticket._id));
+});
+
+it("should send an event when an order is created", async () => {
+  const ticket = await Ticket.build({
+    title: "Vetusta Morla",
+    price: 10,
+  });
+
+  await request(app)
+    .post("/api/orders")
+    .send({ ticketId: ticket._id })
+    .expect(201);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });

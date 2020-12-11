@@ -4,6 +4,7 @@ import { Events } from "@encuentradepa/common";
 
 import { app } from "../../app";
 import { Order, Ticket } from "../../models";
+import { natsWrapper } from "../../nats-wrapper";
 
 it("should return order with status 'cancelled' when succesful", async () => {
   const ticket = await Ticket.build({ title: "Vetusta Morla", price: 10 });
@@ -44,4 +45,18 @@ it("should return not authorized error if order does not belong to user", async 
   });
 
   await request(app).patch(`/api/orders/${order._id}`).expect(401);
+});
+
+it("should send an event when an order is cancelled", async () => {
+  const ticket = await Ticket.build({ title: "Vetusta Morla", price: 10 });
+  const orderCreationResponse = await request(app)
+    .post("/api/orders")
+    .send({ ticketId: ticket._id })
+    .expect(201);
+
+  await request(app)
+    .patch(`/api/orders/${orderCreationResponse.body.order.id}`)
+    .expect(200);
+
+  expect(natsWrapper.client.publish).toHaveBeenCalled();
 });
