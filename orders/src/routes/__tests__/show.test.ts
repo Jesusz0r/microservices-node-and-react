@@ -6,7 +6,11 @@ import { app } from "../../app";
 import { Ticket, Order } from "../../models";
 
 it("should return the right order related to that user", async () => {
-  const ticket = await Ticket.build({ title: "Vetusta Morla", price: 10 });
+  const ticket = await Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: "Vetusta Morla",
+    price: 10,
+  });
 
   const orderCreationResponse = await request(app)
     .post("/api/orders")
@@ -46,7 +50,11 @@ it("should return the right order related to that user", async () => {
 });
 
 it("should return an 404 if user has no order assigned to it", async () => {
-  const ticket = await Ticket.build({ title: "Vetusta morla", price: 10 });
+  const ticket = await Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: "Vetusta morla",
+    price: 10,
+  });
   const order = await Order.build({
     ticket,
     expiresAt: new Date(),

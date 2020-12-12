@@ -6,7 +6,7 @@ import { Errors, Events, Middlewares } from "@encuentradepa/common";
 import { Order, Ticket } from "../models";
 import { verifyUser } from "../middlewares";
 import { natsWrapper } from "../nats-wrapper";
-import { OrderCreatedPublisher } from "../events/publisher/order-created";
+import { Publishers } from "../events";
 
 const EXPIRATION_WINDOW_SECONDS =
   process.env.EXPIRATION_WINDOW_SECONDS || 15 * 60;
@@ -50,7 +50,9 @@ router.post(
       ticket,
     });
 
-    const orderCreatedPublisher = new OrderCreatedPublisher(natsWrapper.client);
+    const orderCreatedPublisher = new Publishers.OrderCreated(
+      natsWrapper.client
+    );
 
     orderCreatedPublisher.publish({
       id: order._id,

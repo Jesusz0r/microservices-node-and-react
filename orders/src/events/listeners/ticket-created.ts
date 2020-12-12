@@ -4,7 +4,7 @@ import { Events } from "@encuentradepa/common";
 import { QueueGroupName } from "./constants";
 import { Ticket } from "../../models";
 
-class TicketCreatedListener extends Events.Listener<Events.EventTypes.TicketCreated> {
+class TicketCreated extends Events.Listener<Events.EventTypes.TicketCreated> {
   readonly subject = Events.Subjects.TicketCreated;
   queueGroupName = QueueGroupName;
 
@@ -24,4 +24,4 @@ class TicketCreatedListener extends Events.Listener<Events.EventTypes.TicketCrea
   }
 }
 
-export { TicketCreatedListener };
+export { TicketCreated };

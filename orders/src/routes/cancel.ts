@@ -6,7 +6,7 @@ import { Errors } from "@encuentradepa/common";
 import { verifyUser } from "../middlewares";
 import { Order } from "../models";
 import { natsWrapper } from "../nats-wrapper";
-import { OrderCancelledPublisher } from "../events/publisher/order-cancelled";
+import { Publishers } from "../events";
 
 const router = express.Router();
 
@@ -36,7 +36,7 @@ router.patch(
     }
 
     const updatedOrder = await order.setCancelStatus();
-    const cancelOrderPublisher = new OrderCancelledPublisher(
+    const cancelOrderPublisher = new Publishers.OrderCancelled(
       natsWrapper.client
     );
 

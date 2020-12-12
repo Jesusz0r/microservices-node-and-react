@@ -6,7 +6,11 @@ import { app } from "../../app";
 import { Ticket, Order } from "../../models";
 
 const buildTicket = async () =>
-  Ticket.build({ title: "Vetusta morla", price: 10 });
+  Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: "Vetusta morla",
+    price: 10,
+  });
 
 it("should return the right amount of orders related to that user", async () => {
   //Create all the tickets previously

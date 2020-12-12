@@ -1,2 +1,2 @@
-export { TicketCreatedListener } from "./ticket-created";
-export { TicketUpdatedListener } from "./ticket-updated";
+export { TicketCreated } from "./ticket-created";
+export { TicketUpdated } from "./ticket-updated";

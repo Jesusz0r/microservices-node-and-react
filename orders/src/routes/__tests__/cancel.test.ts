@@ -7,7 +7,11 @@ import { Order, Ticket } from "../../models";
 import { natsWrapper } from "../../nats-wrapper";
 
 it("should return order with status 'cancelled' when succesful", async () => {
-  const ticket = await Ticket.build({ title: "Vetusta Morla", price: 10 });
+  const ticket = await Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: "Vetusta Morla",
+    price: 10,
+  });
   const orderCreationResponse = await request(app)
     .post("/api/orders")
     .send({ ticketId: ticket._id })
@@ -24,7 +28,11 @@ it("should return order with status 'cancelled' when succesful", async () => {
 });
 
 it("should return not found error if order does not exists", async () => {
-  const ticket = await Ticket.build({ title: "Vetusta Morla", price: 10 });
+  const ticket = await Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: "Vetusta Morla",
+    price: 10,
+  });
 
   await request(app)
     .post("/api/orders")
@@ -36,7 +44,11 @@ it("should return not found error if order does not exists", async () => {
 });
 
 it("should return not authorized error if order does not belong to user", async () => {
-  const ticket = await Ticket.build({ title: "Vetusta Morla", price: 10 });
+  const ticket = await Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: "Vetusta Morla",
+    price: 10,
+  });
   const order = await Order.build({
     userId: new mongoose.Types.ObjectId().toHexString(),
     ticket,
@@ -48,7 +60,11 @@ it("should return not authorized error if order does not belong to user", async 
 });
 
 it("should send an event when an order is cancelled", async () => {
-  const ticket = await Ticket.build({ title: "Vetusta Morla", price: 10 });
+  const ticket = await Ticket.build({
+    id: new mongoose.Types.ObjectId().toHexString(),
+    title: "Vetusta Morla",
+    price: 10,
+  });
   const orderCreationResponse = await request(app)
     .post("/api/orders")
     .send({ ticketId: ticket._id })

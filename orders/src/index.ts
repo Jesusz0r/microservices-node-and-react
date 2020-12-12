@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 
 import { app } from "./app";
 import { natsWrapper } from "./nats-wrapper";
+import { Listeners } from "./events";
 
 async function start() {
   try {
@@ -31,6 +32,9 @@ async function start() {
     });
     process.on("SIGINT", () => nats.close());
     process.on("SIGTERM", () => nats.close());
+
+    new Listeners.TicketCreated(natsWrapper.client).listen();
+    new Listeners.TicketUpdated(natsWrapper.client).listen();
 
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
