@@ -54,3 +54,10 @@ it("should call 'ack' method", async () => {
 
   expect(message.ack).toHaveBeenCalled();
 });
+
+it("should not call 'ack' method if event ticket version is higher than the current ticket version in our database", async () => {
+  const { data, listener, message } = await setup();
+  await listener.onMessage({ ...data, version: data.version + 5 }, message);
+
+  expect(message.ack).not.toHaveBeenCalled();
+});
