@@ -33,15 +33,15 @@ async function start() {
     process.on("SIGINT", () => nats.close());
     process.on("SIGTERM", () => nats.close());
 
-    new Listeners.TicketCreated(natsWrapper.client).listen();
-    new Listeners.TicketUpdated(natsWrapper.client).listen();
-
     await mongoose.connect(process.env.MONGO_URI, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       useCreateIndex: true,
       useFindAndModify: false,
     });
+
+    new Listeners.TicketCreated(natsWrapper.client).listen();
+    new Listeners.TicketUpdated(natsWrapper.client).listen();
 
     console.log("Server is up and running on port: 8000");
     console.log("Connected to the database!");

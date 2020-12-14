@@ -21,6 +21,9 @@ interface TicketDocument extends Document {
 
 interface TicketModel extends Model<TicketDocument> {
   build(ticket: TicketAttributes): TicketDocument;
+  findAndUpdateIfVersion(
+    data: Events.EventTypes.TickedData
+  ): Promise<TicketDocument | null>;
 }
 
 const ticketSchema = new mongoose.Schema({
@@ -42,6 +45,22 @@ ticketSchema.statics = {
     const { _id, ...data } = ticket;
 
     return this.create({ _id, ...data });
+  },
+  findAndUpdateIfVersion: async function (
+    data: Events.EventTypes.TickedData
+  ): Promise<TicketDocument | null> {
+    const { id, title, price, version } = data;
+
+    const ticket = await Ticket.findOne({ _id: id, version: version - 1 });
+
+    if (!ticket) {
+      return null;
+    }
+
+    ticket.set("title", title || ticket.title);
+    ticket.set("price", price || ticket.price);
+
+    return ticket.save();
   },
 };
 ticketSchema.methods = {
