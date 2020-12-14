@@ -23,7 +23,7 @@ it("should create a new ticket succesfuly", async () => {
   expect(response.body.ticket.title).toBe(ticket.title);
   expect(response.body.ticket).toHaveProperty("price");
   expect(response.body.ticket.price).toBe(ticket.price);
-  expect(response.body.ticket).toHaveProperty("id");
+  expect(response.body.ticket).toHaveProperty("_id");
 
   expect(natsWrapper.client.publish).toHaveBeenCalled();
 });

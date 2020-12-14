@@ -22,17 +22,17 @@ it("should return ticket if found", async () => {
     .send(ticket)
     .expect(201);
 
-  const createdTicket = await request(app)
-    .get(`/api/tickets/${response.body.ticket.id}`)
+  const getTicketResponse = await request(app)
+    .get(`/api/tickets/${response.body.ticket._id}`)
     .send()
     .expect(200);
 
-  expect(createdTicket.body).toHaveProperty("ticket");
-  expect(createdTicket.body.ticket).toHaveProperty("userId");
-  expect(createdTicket.body.ticket).toHaveProperty("title");
-  expect(createdTicket.body.ticket.title).toBe(ticket.title);
-  expect(createdTicket.body.ticket).toHaveProperty("price");
-  expect(createdTicket.body.ticket.price).toBe(ticket.price);
-  expect(createdTicket.body.ticket).toHaveProperty("id");
-  expect(createdTicket.body.ticket.id).toBe(response.body.ticket.id);
+  expect(getTicketResponse.body).toHaveProperty("ticket");
+  expect(getTicketResponse.body.ticket).toHaveProperty("userId");
+  expect(getTicketResponse.body.ticket).toHaveProperty("title");
+  expect(getTicketResponse.body.ticket.title).toBe(ticket.title);
+  expect(getTicketResponse.body.ticket).toHaveProperty("price");
+  expect(getTicketResponse.body.ticket.price).toBe(ticket.price);
+  expect(getTicketResponse.body.ticket).toHaveProperty("_id");
+  expect(getTicketResponse.body.ticket._id).toBe(response.body.ticket._id);
 });

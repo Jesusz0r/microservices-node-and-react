@@ -1,10 +1,11 @@
 import mongoose, { Document, Model } from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 
 // // Interfaz que define las propiedades necesarias para crear un nuevo usuario
 interface TicketAttributes {
   title: string;
   price: number;
-  userId: mongoose.Schema.Types.ObjectId;
+  userId: string;
 }
 
 // // Interfaz que describe las propiedades que tendrá el documento creado
@@ -12,42 +13,34 @@ interface TicketAttributes {
 interface TicketDocument extends Document {
   title: string;
   price: number;
-  userId: mongoose.Schema.Types.ObjectId;
+  userId: string;
+
+  version: number;
 }
 
 interface TicketModel extends Model<TicketDocument> {
   build(ticket: TicketAttributes): TicketDocument;
 }
 
-const ticketSchema: mongoose.Schema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: Number,
-      required: true,
-    },
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-    },
+const ticketSchema: mongoose.Schema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
   },
-  {
-    toJSON: {
-      transform(doc, ret) {
-        ret.id = ret._id;
-
-        delete ret.__v;
-        delete ret._id;
-      },
-    },
-  }
-);
+  price: {
+    type: Number,
+    required: true,
+  },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+  },
+});
+ticketSchema.set("versionKey", "version");
+ticketSchema.plugin(updateIfCurrentPlugin);
 ticketSchema.statics = {
   build: function (ticket: TicketAttributes): TicketDocument {
-    return this.create({ ticket });
+    return this.create(ticket);
   },
 };
 

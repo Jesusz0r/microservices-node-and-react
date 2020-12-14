@@ -27,7 +27,7 @@ it("should succesfuly update title of an existing ticket", async () => {
     .expect(201);
 
   const response = await request(app)
-    .put(`/api/tickets/${createdTicket.body.ticket.id}`)
+    .put(`/api/tickets/${createdTicket.body.ticket._id}`)
     .send({ title: newTitle })
     .expect(200);
 
@@ -51,7 +51,7 @@ it("should succesfuly update price of an existing ticket", async () => {
     .expect(201);
 
   const response = await request(app)
-    .put(`/api/tickets/${createdTicket.body.ticket.id}`)
+    .put(`/api/tickets/${createdTicket.body.ticket._id}`)
     .send({ price: newPrice })
     .expect(200);
 
