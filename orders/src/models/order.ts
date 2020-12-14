@@ -23,32 +23,21 @@ interface OrderModel extends Model<OrderDocument> {
   build(order: OrderAttributes): OrderDocument;
 }
 
-const ordersSchema = new mongoose.Schema(
-  {
-    userId: { type: mongoose.Types.ObjectId, required: true },
-    status: {
-      type: String,
-      required: true,
-      enum: Object.values(Events.Status.OrderStatus),
-      default: Events.Status.OrderStatus.Created,
-    },
-    expiresAt: { type: mongoose.Schema.Types.Date },
-    ticket: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Ticket",
-      required: true,
-    },
+const ordersSchema = new mongoose.Schema({
+  userId: { type: mongoose.Types.ObjectId, required: true },
+  status: {
+    type: String,
+    required: true,
+    enum: Object.values(Events.Status.OrderStatus),
+    default: Events.Status.OrderStatus.Created,
   },
-  {
-    toJSON: {
-      transform(doc, ret) {
-        ret.id = ret._id;
-
-        delete ret._id;
-      },
-    },
-  }
-);
+  expiresAt: { type: mongoose.Schema.Types.Date },
+  ticket: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Ticket",
+    required: true,
+  },
+});
 
 ordersSchema.statics = {
   build: function (order: OrderAttributes): OrderDocument {

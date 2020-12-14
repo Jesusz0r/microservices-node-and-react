@@ -1,5 +1,5 @@
 import { Message } from "node-nats-streaming";
-import { Events } from "@encuentradepa/common";
+import { Events, Errors } from "@encuentradepa/common";
 
 import { QueueGroupName } from "./constants";
 import { Ticket } from "../../models";
@@ -13,13 +13,17 @@ class TicketUpdated extends Events.Listener<Events.EventTypes.TicketUpdated> {
     message: Message
   ) {
     try {
-      const { id, title, price } = data;
+      const { id, title, price, version } = data;
+      const ticket = await Ticket.findOne({ _id: id, version: version - 1 });
 
-      await Ticket.findOneAndUpdate(
-        { _id: id },
-        { title, price },
-        { new: true, omitUndefined: true }
-      );
+      if (!ticket) {
+        throw new Errors.BadRequestError();
+      }
+
+      ticket.set("title", title || ticket.title);
+      ticket.set("price", price || ticket.price);
+
+      await ticket.save();
 
       message.ack();
     } catch (error) {

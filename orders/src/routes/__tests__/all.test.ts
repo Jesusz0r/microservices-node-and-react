@@ -7,7 +7,7 @@ import { Ticket, Order } from "../../models";
 
 const buildTicket = async () =>
   Ticket.build({
-    id: new mongoose.Types.ObjectId().toHexString(),
+    _id: new mongoose.Types.ObjectId().toHexString(),
     title: "Vetusta morla",
     price: 10,
   });
@@ -44,8 +44,8 @@ it("should return the right amount of orders related to that user", async () => 
 
   expect(responseAllOrders.body).toHaveProperty("orders");
   expect(responseAllOrders.body.orders).toHaveLength(2);
-  expect(String(responseAllOrders.body.orders[0].id)).toBe(
-    String(orderOneResponse.body.order.id)
+  expect(String(responseAllOrders.body.orders[0]._id)).toBe(
+    String(orderOneResponse.body.order._id)
   );
   expect(responseAllOrders.body.orders[0].title).toBe(
     orderOneResponse.body.order.title
@@ -53,8 +53,8 @@ it("should return the right amount of orders related to that user", async () => 
   expect(responseAllOrders.body.orders[0].price).toBe(
     orderOneResponse.body.order.price
   );
-  expect(String(responseAllOrders.body.orders[1].id)).toBe(
-    String(orderTwoResponse.body.order.id)
+  expect(String(responseAllOrders.body.orders[1]._id)).toBe(
+    String(orderTwoResponse.body.order._id)
   );
   expect(responseAllOrders.body.orders[1].title).toBe(
     orderTwoResponse.body.order.title

@@ -8,7 +8,7 @@ import { natsWrapper } from "../../nats-wrapper";
 
 it("should return order with status 'cancelled' when succesful", async () => {
   const ticket = await Ticket.build({
-    id: new mongoose.Types.ObjectId().toHexString(),
+    _id: new mongoose.Types.ObjectId().toHexString(),
     title: "Vetusta Morla",
     price: 10,
   });
@@ -17,7 +17,7 @@ it("should return order with status 'cancelled' when succesful", async () => {
     .send({ ticketId: ticket._id })
     .expect(201);
   const cancelResponse = await request(app)
-    .patch(`/api/orders/${orderCreationResponse.body.order.id}`)
+    .patch(`/api/orders/${orderCreationResponse.body.order._id}`)
     .expect(200);
 
   expect(cancelResponse.body).toHaveProperty("order");
@@ -29,7 +29,7 @@ it("should return order with status 'cancelled' when succesful", async () => {
 
 it("should return not found error if order does not exists", async () => {
   const ticket = await Ticket.build({
-    id: new mongoose.Types.ObjectId().toHexString(),
+    _id: new mongoose.Types.ObjectId().toHexString(),
     title: "Vetusta Morla",
     price: 10,
   });
@@ -45,7 +45,7 @@ it("should return not found error if order does not exists", async () => {
 
 it("should return not authorized error if order does not belong to user", async () => {
   const ticket = await Ticket.build({
-    id: new mongoose.Types.ObjectId().toHexString(),
+    _id: new mongoose.Types.ObjectId().toHexString(),
     title: "Vetusta Morla",
     price: 10,
   });
@@ -61,7 +61,7 @@ it("should return not authorized error if order does not belong to user", async 
 
 it("should send an event when an order is cancelled", async () => {
   const ticket = await Ticket.build({
-    id: new mongoose.Types.ObjectId().toHexString(),
+    _id: new mongoose.Types.ObjectId().toHexString(),
     title: "Vetusta Morla",
     price: 10,
   });
@@ -71,7 +71,7 @@ it("should send an event when an order is cancelled", async () => {
     .expect(201);
 
   await request(app)
-    .patch(`/api/orders/${orderCreationResponse.body.order.id}`)
+    .patch(`/api/orders/${orderCreationResponse.body.order._id}`)
     .expect(200);
 
   expect(natsWrapper.client.publish).toHaveBeenCalled();

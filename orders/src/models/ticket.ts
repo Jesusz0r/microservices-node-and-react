@@ -1,16 +1,17 @@
 import mongoose, { Document, Model } from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { Events } from "@encuentradepa/common";
 
 import { Order } from "./order";
 
 interface TicketAttributes {
-  id: string;
+  _id: string;
   title: string;
   price: number;
 }
 
 interface TicketDocument extends Document {
-  id: string;
+  _id: string;
   title: string;
   price: number;
   version: number;
@@ -22,33 +23,25 @@ interface TicketModel extends Model<TicketDocument> {
   build(ticket: TicketAttributes): TicketDocument;
 }
 
-const ticketSchema = new mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-    },
-    price: {
-      type: String,
-      required: true,
-    },
+const ticketSchema = new mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
   },
-  {
-    toJSON: {
-      transform(doc, ret) {
-        ret.id = ret._id;
+  price: {
+    type: String,
+    required: true,
+  },
+});
 
-        delete ret._id;
-      },
-    },
-  }
-);
+ticketSchema.set("versionKey", "version");
+ticketSchema.plugin(updateIfCurrentPlugin);
 
 ticketSchema.statics = {
   build: function (ticket: TicketAttributes): TicketDocument {
-    const { id, ...data } = ticket;
+    const { _id, ...data } = ticket;
 
-    return this.create({ _id: id, ...data });
+    return this.create({ _id, ...data });
   },
 };
 ticketSchema.methods = {

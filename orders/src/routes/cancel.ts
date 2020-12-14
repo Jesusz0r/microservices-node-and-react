@@ -42,8 +42,9 @@ router.patch(
 
     cancelOrderPublisher.publish({
       id: order._id,
+      version: 0,
       ticket: {
-        id: order.ticket.id!,
+        id: order.ticket._id!,
       },
     });
 

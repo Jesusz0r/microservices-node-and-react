@@ -32,8 +32,6 @@ router.post(
       throw new Errors.NotFoundError();
     }
 
-    console.log("ticket:", ticket);
-
     const isReserved = await ticket.isReserved();
 
     if (isReserved) {

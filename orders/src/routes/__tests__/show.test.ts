@@ -7,7 +7,7 @@ import { Ticket, Order } from "../../models";
 
 it("should return the right order related to that user", async () => {
   const ticket = await Ticket.build({
-    id: new mongoose.Types.ObjectId().toHexString(),
+    _id: new mongoose.Types.ObjectId().toHexString(),
     title: "Vetusta Morla",
     price: 10,
   });
@@ -17,7 +17,7 @@ it("should return the right order related to that user", async () => {
     .send({ ticketId: ticket._id })
     .expect(201);
   const orderGetResponse = await request(app)
-    .get(`/api/orders/${orderCreationResponse.body.order.id}`)
+    .get(`/api/orders/${orderCreationResponse.body.order._id}`)
     .expect(200);
 
   expect(orderGetResponse.body).toHaveProperty("order");
@@ -40,18 +40,18 @@ it("should return the right order related to that user", async () => {
   expect(orderGetResponse.body.order.ticket.price).toBe(
     orderCreationResponse.body.order.ticket.price
   );
-  expect(String(orderGetResponse.body.order.ticket.id)).toBe(
-    String(orderCreationResponse.body.order.ticket.id)
+  expect(String(orderGetResponse.body.order.ticket._id)).toBe(
+    String(orderCreationResponse.body.order.ticket._id)
   );
-  expect(orderGetResponse.body.order).toHaveProperty("id");
-  expect(String(orderGetResponse.body.order.id)).toBe(
-    String(orderCreationResponse.body.order.id)
+  expect(orderGetResponse.body.order).toHaveProperty("_id");
+  expect(String(orderGetResponse.body.order._id)).toBe(
+    String(orderCreationResponse.body.order._id)
   );
 });
 
 it("should return an 404 if user has no order assigned to it", async () => {
   const ticket = await Ticket.build({
-    id: new mongoose.Types.ObjectId().toHexString(),
+    _id: new mongoose.Types.ObjectId().toHexString(),
     title: "Vetusta morla",
     price: 10,
   });
