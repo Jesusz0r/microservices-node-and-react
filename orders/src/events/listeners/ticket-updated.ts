@@ -13,21 +13,23 @@ class TicketUpdated extends Events.Listener<Events.EventTypes.TicketUpdated> {
     message: Message
   ) {
     try {
-      const { id, title, price, version } = data;
-      const ticket = await Ticket.findOne({ _id: id, version: version - 1 });
+      const ticket = await Ticket.findAndUpdateIfVersion(data);
 
       if (!ticket) {
-        throw new Errors.BadRequestError();
+        throw new Errors.NotFoundError();
       }
-
-      ticket.set("title", title || ticket.title);
-      ticket.set("price", price || ticket.price);
 
       await ticket.save();
 
       message.ack();
     } catch (error) {
-      console.error(error);
+      console.error(
+        `Error: ${
+          error.message
+        } - EventId: ${message.getSequence()} - EventSubject: ${
+          this.subject
+        } - Queue: ${this.queueGroupName}.`
+      );
     }
   }
 }

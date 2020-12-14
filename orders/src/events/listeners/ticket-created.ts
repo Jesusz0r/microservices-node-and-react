@@ -12,14 +12,20 @@ class TicketCreated extends Events.Listener<Events.EventTypes.TicketCreated> {
     data: Events.EventTypes.TicketCreated["data"],
     message: Message
   ) {
-    try {
-      const { id, title, price } = data;
+    const { id, title, price } = data;
 
-      await Ticket.build({ _id: id, title, price });
+    try {
+      const ticket = await Ticket.build({ _id: id, title, price });
 
       message.ack();
     } catch (error) {
-      console.error(error);
+      console.error(
+        `Error: ${
+          error.message
+        } - EventId: ${message.getSequence()} - EventSubject: ${
+          this.subject
+        } - Queue: ${this.queueGroupName}.`
+      );
     }
   }
 }
