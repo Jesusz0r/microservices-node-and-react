@@ -50,7 +50,6 @@ ticketSchema.statics = {
     data: Events.EventTypes.TickedData
   ): Promise<TicketDocument | null> {
     const { id, title, price, version } = data;
-
     const ticket = await Ticket.findOne({ _id: id, version: version - 1 });
 
     if (!ticket) {

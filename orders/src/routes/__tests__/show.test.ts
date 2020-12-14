@@ -49,7 +49,26 @@ it("should return the right order related to that user", async () => {
   );
 });
 
-it("should return an 404 if user has no order assigned to it", async () => {
+it("should return an 404 if order does not exists", async () => {
+  const ticket = await Ticket.build({
+    _id: new mongoose.Types.ObjectId().toHexString(),
+    title: "Vetusta morla",
+    price: 10,
+  });
+
+  await Order.build({
+    ticket,
+    expiresAt: new Date(),
+    userId: new mongoose.Types.ObjectId().toHexString(),
+    status: Events.Status.OrderStatus.Created,
+  });
+  await request(app)
+    .get(`/api/orders/${new mongoose.Types.ObjectId().toHexString()}`)
+    .send({})
+    .expect(404);
+});
+
+it("should return an 401 if order userId is not the same as the current userId", async () => {
   const ticket = await Ticket.build({
     _id: new mongoose.Types.ObjectId().toHexString(),
     title: "Vetusta morla",

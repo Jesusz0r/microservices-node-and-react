@@ -15,7 +15,7 @@ class TicketCreated extends Events.Listener<Events.EventTypes.TicketCreated> {
     const { id, title, price } = data;
 
     try {
-      const ticket = await Ticket.build({ _id: id, title, price });
+      await Ticket.build({ _id: id, title, price });
 
       message.ack();
     } catch (error) {

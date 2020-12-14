@@ -19,8 +19,6 @@ class TicketUpdated extends Events.Listener<Events.EventTypes.TicketUpdated> {
         throw new Errors.NotFoundError();
       }
 
-      await ticket.save();
-
       message.ack();
     } catch (error) {
       console.error(
