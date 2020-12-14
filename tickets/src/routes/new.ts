@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { body } from "express-validator";
-import { Middlewares, Errors, Events } from "@encuentradepa/common";
+import { Middlewares, Errors } from "@encuentradepa/common";
 
 import { natsWrapper } from "../nats-wrapper";
 import { Ticket } from "../models";

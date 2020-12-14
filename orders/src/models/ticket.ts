@@ -1,5 +1,4 @@
 import mongoose, { Document, Model } from "mongoose";
-import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { Events } from "@encuentradepa/common";
 
 import { Order } from "./order";
@@ -68,8 +67,6 @@ ticketSchema.methods = {
     return !!isReserved;
   },
 };
-ticketSchema.set("versionKey", "version");
-ticketSchema.plugin(updateIfCurrentPlugin);
 
 const Ticket = mongoose.model<TicketDocument, TicketModel>(
   "Ticket",

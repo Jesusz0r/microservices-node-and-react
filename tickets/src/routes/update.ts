@@ -21,15 +21,16 @@ router.put(
   async (req: Request, res: Response) => {
     const { id } = req.params;
     const { title, price } = req.body;
-    const ticket = await Ticket.findOneAndUpdate(
-      { _id: id },
-      { title, price },
-      { new: true, omitUndefined: true }
-    );
+    const ticket = await Ticket.findOne({ _id: id });
 
     if (!ticket) {
       throw new Errors.NotFoundError();
     }
+
+    ticket.set("title", title || ticket.title);
+    ticket.set("price", price || ticket.price);
+
+    await ticket.save();
 
     const ticketUpdatedPublisher = new Publishers.TicketUpdated(
       natsWrapper.client

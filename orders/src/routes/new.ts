@@ -32,6 +32,8 @@ router.post(
       throw new Errors.NotFoundError();
     }
 
+    console.log("ticket:", ticket);
+
     const isReserved = await ticket.isReserved();
 
     if (isReserved) {
@@ -57,10 +59,11 @@ router.post(
     orderCreatedPublisher.publish({
       id: order._id,
       userId,
+      version: ticket.version,
       status: Events.Status.OrderStatus.Created,
       expiresAt: order.expiresAt.toISOString(),
       ticket: {
-        id: ticketId,
+        id: ticket._id,
         price: 10,
       },
     });
