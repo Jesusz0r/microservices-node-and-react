@@ -1,4 +1,5 @@
-import mongoose, { Document, Model, ObjectId } from "mongoose";
+import mongoose, { Document, Model, version } from "mongoose";
+import { updateIfCurrentPlugin } from "mongoose-update-if-current";
 import { Events } from "@encuentradepa/common";
 
 import { TicketDocument } from "./ticket";
@@ -38,6 +39,9 @@ const ordersSchema = new mongoose.Schema({
     required: true,
   },
 });
+
+ordersSchema.set("versionKey", version);
+ordersSchema.plugin(updateIfCurrentPlugin);
 
 ordersSchema.statics = {
   build: function (order: OrderAttributes): OrderDocument {
