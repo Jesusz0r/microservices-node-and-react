@@ -14,6 +14,7 @@ interface TicketDocument extends Document {
   title: string;
   price: number;
   userId: string;
+  orderId?: string;
 
   version: number;
 }
@@ -35,6 +36,7 @@ const ticketSchema: mongoose.Schema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
   },
+  orderId: mongoose.Schema.Types.ObjectId,
 });
 
 ticketSchema.set("versionKey", "version");
