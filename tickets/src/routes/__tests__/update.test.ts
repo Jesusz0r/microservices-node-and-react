@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 import { app } from "../../app";
 import { natsWrapper } from "../../nats-wrapper";
+import { Ticket } from "../../models";
 
 beforeEach(() => {
   jest.clearAllMocks();
@@ -61,4 +62,20 @@ it("should succesfuly update price of an existing ticket", async () => {
   expect(response.body.ticket).toHaveProperty("price");
   expect(response.body.ticket.price === ticket.price).toBe(false);
   expect(response.body.ticket.price).toBe(newPrice);
+});
+
+it("should not allow updates when ticket has been reserved and has userId", async () => {
+  const { body } = await request(app)
+    .post("/api/tickets")
+    .send({ title: "Vetusta morla", price: 40 })
+    .expect(201);
+  const ticket = await Ticket.findOne({ _id: body.ticket._id });
+
+  ticket?.set("orderId", new mongoose.Types.ObjectId());
+
+  await ticket?.save();
+  await request(app)
+    .put(`/api/tickets/${body.ticket._id}`)
+    .send({ price: 20 })
+    .expect(400);
 });

@@ -27,6 +27,10 @@ router.put(
       throw new Errors.NotFoundError();
     }
 
+    if (ticket.orderId) {
+      throw new Errors.BadRequestError();
+    }
+
     ticket.set("title", title || ticket.title);
     ticket.set("price", price || ticket.price);
 
