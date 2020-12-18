@@ -22,7 +22,7 @@ interface TicketDocument extends Document {
 interface TicketModel extends Model<TicketDocument> {
   build(ticket: TicketAttributes): TicketDocument;
   findAndUpdateIfVersion(
-    data: Events.EventTypes.TickedData
+    data: Events.EventTypes.TicketUpdated["data"]
   ): Promise<TicketDocument | null>;
 }
 
@@ -47,7 +47,7 @@ ticketSchema.statics = {
     return this.create({ _id, ...data });
   },
   findAndUpdateIfVersion: async function (
-    data: Events.EventTypes.TickedData
+    data: Events.EventTypes.TicketUpdated["data"]
   ): Promise<TicketDocument | null> {
     const { id, title, price, version } = data;
     const ticket = await Ticket.findOne({ _id: id, version: version - 1 });

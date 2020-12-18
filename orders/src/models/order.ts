@@ -16,6 +16,7 @@ interface OrderDocument extends Document {
   status: string;
   expiresAt: Date;
   ticket: TicketDocument;
+  version: number;
 
   setCancelStatus(): Promise<OrderDocument>;
 }
