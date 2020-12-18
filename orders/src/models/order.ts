@@ -40,7 +40,7 @@ const ordersSchema = new mongoose.Schema({
   },
 });
 
-ordersSchema.set("versionKey", version);
+ordersSchema.set("versionKey", "version");
 ordersSchema.plugin(updateIfCurrentPlugin);
 
 ordersSchema.statics = {
