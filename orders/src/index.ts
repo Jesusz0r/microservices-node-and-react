@@ -42,6 +42,7 @@ async function start() {
 
     new Listeners.TicketCreated(natsWrapper.client).listen();
     new Listeners.TicketUpdated(natsWrapper.client).listen();
+    new Listeners.ExpirationCompleted(natsWrapper.client).listen();
 
     console.log("Server is up and running on port: 8000");
     console.log("Connected to the database!");
