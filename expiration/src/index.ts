@@ -1,4 +1,5 @@
 import { natsWrapper } from "./nats-wrapper";
+import { Listeners } from "./events";
 
 async function start() {
   try {
@@ -23,6 +24,10 @@ async function start() {
     });
     process.on("SIGINT", () => nats.close());
     process.on("SIGTERM", () => nats.close());
+
+    const orderCreatedListener = new Listeners.OrderCreated(natsWrapper.client);
+
+    await orderCreatedListener.listen();
 
     console.log("Server is up and running on port: 8000");
     console.log("Connected to the database!");
