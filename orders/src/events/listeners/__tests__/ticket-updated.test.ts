@@ -26,6 +26,7 @@ const setup = async () => {
   });
   const data: Events.EventTypes.TicketUpdated["data"] = {
     id,
+    orderId: new mongoose.Types.ObjectId().toHexString(),
     userId: new mongoose.Types.ObjectId().toHexString(),
     title: "asdasd",
     price,
