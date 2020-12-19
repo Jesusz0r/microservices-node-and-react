@@ -25,3 +25,5 @@ spec:
                   fieldPath: metadata.name
             - name: NATS_URI
               value: "http://nats-service:4222"
+            - name: REDIS_HOST
+              value: expiration-redis-service
