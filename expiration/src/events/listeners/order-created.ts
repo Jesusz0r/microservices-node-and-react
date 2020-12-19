@@ -1,12 +1,12 @@
 import { Message } from "node-nats-streaming";
 import { Events } from "@encuentradepa/common";
 
-import { queueGroupName } from "./constants";
+import { QueueGroupName } from "./constants";
 import { expirationQueue } from "../../queues/expiration-queue";
 
 class OrderCreated extends Events.Listener<Events.EventTypes.OrderCreated> {
   readonly subject = Events.Subjects.OrderCreated;
-  queueGroupName = queueGroupName;
+  queueGroupName = QueueGroupName;
 
   async onMessage(
     data: Events.EventTypes.OrderCreated["data"],
