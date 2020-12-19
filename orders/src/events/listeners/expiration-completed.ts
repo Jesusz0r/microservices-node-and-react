@@ -22,6 +22,10 @@ export class ExpirationCompleted extends Events.Listener<Events.EventTypes.Expir
       throw new Errors.NotFoundError();
     }
 
+    if (order.status === Events.Status.OrderStatus.Completed) {
+      return message.ack();
+    }
+
     order.set("status", Events.Status.OrderStatus.Cancelled);
 
     await order.save();
@@ -32,6 +36,7 @@ export class ExpirationCompleted extends Events.Listener<Events.EventTypes.Expir
         id: order.ticket._id,
       },
     });
-    await message.ack();
+
+    message.ack();
   }
 }
