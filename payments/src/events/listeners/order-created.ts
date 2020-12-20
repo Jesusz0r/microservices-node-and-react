@@ -1,5 +1,5 @@
 import { Message } from "node-nats-streaming";
-import { Errors, Events } from "@encuentradepa/common";
+import { Events } from "@encuentradepa/common";
 
 import { QueueGroupName } from "./constants";
 import { Order } from "../../models";
