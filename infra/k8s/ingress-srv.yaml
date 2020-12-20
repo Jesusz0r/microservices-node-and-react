@@ -22,6 +22,10 @@ spec:
             backend:
               serviceName: orders-service
               servicePort: 8000
+          - path: /api/payments/?(.*)
+            backend:
+              serviceName: payments-service
+              servicePort: 8000
           - path: /?(.*)
             backend:
               serviceName: client-service
