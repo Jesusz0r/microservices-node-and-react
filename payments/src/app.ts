@@ -5,7 +5,7 @@ import morgan from "morgan";
 import cookieSession from "cookie-session";
 import { Errors, Middlewares } from "@encuentradepa/common";
 
-// import routes from "./routes";
+import routes from "./routes";
 
 const app = express();
 
@@ -21,7 +21,7 @@ app.use(
 );
 app.use(morgan("dev"));
 
-// app.use("/api/tickets", routes);
+app.use("/api/payments", routes);
 app.use(Middlewares.errorHandler);
 
 app.all("*", (req, res, next) => {

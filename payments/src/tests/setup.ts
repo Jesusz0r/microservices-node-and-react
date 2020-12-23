@@ -4,7 +4,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 let mongo: any;
 
 jest.mock("../nats-wrapper");
-// jest.mock("../middlewares");
+jest.mock("../middlewares");
 
 beforeAll(async () => {
   process.env.JWT_SECRET = "asdasd";
