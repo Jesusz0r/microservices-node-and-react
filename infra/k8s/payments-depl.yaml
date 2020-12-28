@@ -27,11 +27,16 @@ spec:
               value: "http://nats-service:4222"
             - name: MONGO_URI
               value: "mongodb://payments-mongo-service:27017/payments"
+            - name: STRIPE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secret
+                  key: STRIPE_KEY
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: payments
+  name: payments-service
 spec:
   selector:
     app: payments
