@@ -4,7 +4,7 @@ import { Events } from "@encuentradepa/common";
 
 interface OrderAttributes {
   _id: string;
-  status: Events.Status.OrderStatus;
+  status: Events.Status.Order;
   userId: string;
   price: number;
   version: number;
@@ -12,7 +12,7 @@ interface OrderAttributes {
 
 interface OrderDocument extends Document {
   _id: string;
-  status: Events.Status.OrderStatus;
+  status: Events.Status.Order;
   userId: string;
   price: number;
   version: number;
@@ -25,7 +25,7 @@ interface OrderModel extends Model<OrderDocument> {
 const orderSchema = new mongoose.Schema({
   status: {
     type: String,
-    enum: Object.values(Events.Status.OrderStatus),
+    enum: Object.values(Events.Status.Order),
     required: true,
   },
   userId: { type: mongoose.Types.ObjectId, required: true },
