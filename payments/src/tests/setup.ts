@@ -4,6 +4,7 @@ import { MongoMemoryServer } from "mongodb-memory-server";
 let mongo: any;
 
 jest.mock("../nats-wrapper");
+jest.mock("../stripe");
 jest.mock("../middlewares");
 
 beforeAll(async () => {
