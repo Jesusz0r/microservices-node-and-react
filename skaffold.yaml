@@ -40,16 +40,16 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
-    - image: jesusz0r/client
-      context: client
+    - image: jesusz0r/payments
+      context: payments
       docker:
         dockerfile: Dockerfile
       sync:
         manual:
-          - src: "**/*.js"
+          - src: "**/*.ts"
             dest: .
-    - image: jesusz0r/payments
-      context: payments
+    - image: jesusz0r/client
+      context: client
       docker:
         dockerfile: Dockerfile
       sync:
