@@ -4,7 +4,7 @@ import { Events } from "@encuentradepa/common";
 
 import { app } from "../../app";
 import { userId } from "../../middlewares/__mocks__/verify-user";
-import { Order } from "../../models";
+import { Order, Payment } from "../../models";
 
 it("should return a 404 if order does not exists", async () => {
   await request(app)
@@ -44,4 +44,23 @@ it("should return 500 if order status is cancelled", async () => {
     .post("/api/payments")
     .send({ orderId: order._id, token: "asdasd" })
     .expect(400);
+});
+
+it("should save a payment to the database", async () => {
+  const order = await Order.build({
+    _id: new mongoose.Types.ObjectId().toHexString(),
+    userId: userId.toHexString(),
+    price: 10,
+    status: Events.Status.OrderStatus.Created,
+    version: 0,
+  });
+
+  await request(app)
+    .post("/api/payments")
+    .send({ orderId: order._id, token: "tok_visa" })
+    .expect(201);
+
+  const payment = await Payment.findOne({ orderId: order._id });
+
+  expect(payment).not.toBeNull();
 });
