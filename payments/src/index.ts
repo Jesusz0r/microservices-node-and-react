@@ -18,6 +18,9 @@ async function start() {
     if (!process.env.NATS_URI) {
       throw new Error("NATS_URI environment variable is required.");
     }
+    if (!process.env.STRIPE_KEY) {
+      throw new Error("STRIPE_KEY environment variable is required");
+    }
 
     await app.listen(8000);
 
@@ -36,9 +39,7 @@ async function start() {
     const orderCancelledListener = new Listeners.OrderCancelled(
       natsWrapper.client
     );
-    const orderCreatedListener = new Listeners.OrderCancelled(
-      natsWrapper.client
-    );
+    const orderCreatedListener = new Listeners.OrderCreated(natsWrapper.client);
 
     orderCancelledListener.listen();
     orderCreatedListener.listen();
