@@ -21,7 +21,7 @@ it("should return a 401 if userId does not belongs to the order", async () => {
     _id: new mongoose.Types.ObjectId().toHexString(),
     userId: new mongoose.Types.ObjectId().toHexString(),
     price: 10,
-    status: Events.Status.OrderStatus.AwaitingPayment,
+    status: Events.Status.Order.AwaitingPayment,
     version: 0,
   });
 
@@ -36,7 +36,7 @@ it("should return 500 if order status is cancelled", async () => {
     _id: new mongoose.Types.ObjectId().toHexString(),
     userId: userId.toHexString(),
     price: 10,
-    status: Events.Status.OrderStatus.Cancelled,
+    status: Events.Status.Order.Cancelled,
     version: 0,
   });
 
@@ -51,7 +51,7 @@ it("should save a payment to the database", async () => {
     _id: new mongoose.Types.ObjectId().toHexString(),
     userId: userId.toHexString(),
     price: 10,
-    status: Events.Status.OrderStatus.Created,
+    status: Events.Status.Order.Created,
     version: 0,
   });
 

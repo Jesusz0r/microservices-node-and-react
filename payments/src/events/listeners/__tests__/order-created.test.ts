@@ -13,10 +13,10 @@ const setup = async () => {
     ack: jest.fn(),
   };
   const listener = new OrderCreated(natsWrapper.client);
-  const data: Events.EventTypes.OrderCreated["data"] = {
+  const data: Events.Types.OrderCreated["data"] = {
     id: new mongoose.Types.ObjectId().toHexString(),
     userId: new mongoose.Types.ObjectId().toHexString(),
-    status: Events.Status.OrderStatus.Created,
+    status: Events.Status.Order.Created,
     expiresAt: new Date().toISOString(),
     version: 0,
     ticket: {
@@ -38,7 +38,7 @@ it("should succesfuly create the order and call the ack method", async () => {
   expect(order).toHaveProperty("_id");
   expect(String(order!._id)).toEqual(String(data.id));
   expect(order).toHaveProperty("status");
-  expect(order!.status).toEqual(Events.Status.OrderStatus.Created);
+  expect(order!.status).toEqual(Events.Status.Order.Created);
   expect(order).toHaveProperty("userId");
   expect(String(order!.userId)).toEqual(String(data.userId));
   expect(order).toHaveProperty("version");

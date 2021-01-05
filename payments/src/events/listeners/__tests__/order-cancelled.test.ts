@@ -15,12 +15,12 @@ const setup = async () => {
   const listener = new OrderCancelled(natsWrapper.client);
   const order = await Order.build({
     _id: new mongoose.Types.ObjectId().toHexString(),
-    status: Events.Status.OrderStatus.Created,
+    status: Events.Status.Order.Created,
     userId: new mongoose.Types.ObjectId().toHexString(),
     price: 10,
     version: 0,
   });
-  const data: Events.EventTypes.OrderCancelled["data"] = {
+  const data: Events.Types.OrderCancelled["data"] = {
     id: order._id,
     version: order.version + 1,
     ticket: {
@@ -39,7 +39,7 @@ it("should succesfuly cancel the order and call the ack method", async () => {
   const order = await Order.findOne({ _id: data.id });
 
   expect(order).toHaveProperty("status");
-  expect(order!.status).toEqual(Events.Status.OrderStatus.Cancelled);
+  expect(order!.status).toEqual(Events.Status.Order.Cancelled);
   expect(message.ack).toHaveBeenCalled();
 });
 
@@ -61,7 +61,7 @@ it("should fail if order is already Completed or already Cancelled", async () =>
     const { data, listener, message } = await setup();
     const order = await Order.findOne({ _id: data.id });
 
-    order!.set("status", Events.Status.OrderStatus.Completed);
+    order!.set("status", Events.Status.Order.Completed);
 
     await order!.save();
     await listener.onMessage(
