@@ -19,7 +19,7 @@ const setup = async () => {
     ack: jest.fn(),
   };
   const listener = new TicketCreated(natsWrapper.client);
-  const data: Events.EventTypes.TicketCreated["data"] = {
+  const data: Events.Types.TicketCreated["data"] = {
     id: new mongoose.Types.ObjectId().toHexString(),
     title: "Vetusta Morla",
     price: 10,

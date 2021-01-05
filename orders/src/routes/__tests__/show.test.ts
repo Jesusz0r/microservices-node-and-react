@@ -60,7 +60,7 @@ it("should return an 404 if order does not exists", async () => {
     ticket,
     expiresAt: new Date(),
     userId: new mongoose.Types.ObjectId().toHexString(),
-    status: Events.Status.OrderStatus.Created,
+    status: Events.Status.Order.Created,
   });
   await request(app)
     .get(`/api/orders/${new mongoose.Types.ObjectId().toHexString()}`)
@@ -78,7 +78,7 @@ it("should return an 401 if order userId is not the same as the current userId",
     ticket,
     expiresAt: new Date(),
     userId: new mongoose.Types.ObjectId().toHexString(),
-    status: Events.Status.OrderStatus.Created,
+    status: Events.Status.Order.Created,
   });
 
   await request(app).get(`/api/orders/${order._id}`).send({}).expect(401);

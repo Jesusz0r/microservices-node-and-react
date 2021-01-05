@@ -21,7 +21,7 @@ it("should return the right amount of orders related to that user", async () => 
   // Create a new order with a different userId to simulate another user has reserved this order.
   await Order.build({
     userId: new mongoose.Types.ObjectId().toHexString(),
-    status: Events.Status.OrderStatus.Created,
+    status: Events.Status.Order.Created,
     expiresAt: new Date(),
     ticket: ticketOne,
   });

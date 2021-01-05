@@ -24,7 +24,7 @@ const setup = async () => {
     title: "Vetusta Morla",
     price: 10,
   });
-  const data: Events.EventTypes.TicketUpdated["data"] = {
+  const data: Events.Types.TicketUpdated["data"] = {
     id,
     orderId: new mongoose.Types.ObjectId().toHexString(),
     userId: new mongoose.Types.ObjectId().toHexString(),

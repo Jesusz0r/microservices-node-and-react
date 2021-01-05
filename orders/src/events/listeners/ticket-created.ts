@@ -4,14 +4,11 @@ import { Events } from "@encuentradepa/common";
 import { QueueGroupName } from "./constants";
 import { Ticket } from "../../models";
 
-class TicketCreated extends Events.Listener<Events.EventTypes.TicketCreated> {
+class TicketCreated extends Events.Listener<Events.Types.TicketCreated> {
   readonly subject = Events.Subjects.TicketCreated;
   queueGroupName = QueueGroupName;
 
-  async onMessage(
-    data: Events.EventTypes.TicketCreated["data"],
-    message: Message
-  ) {
+  async onMessage(data: Events.Types.TicketCreated["data"], message: Message) {
     const { id, title, price } = data;
 
     try {

@@ -24,11 +24,11 @@ const setup = async () => {
   });
   const order = await Order.build({
     userId: new mongoose.Types.ObjectId().toHexString(),
-    status: Events.Status.OrderStatus.Created,
+    status: Events.Status.Order.Created,
     expiresAt: new Date(),
     ticket,
   });
-  const data: Events.EventTypes.ExpirationCompleted["data"] = {
+  const data: Events.Types.ExpirationCompleted["data"] = {
     orderId: order._id,
   };
 
@@ -42,7 +42,7 @@ it("should succesfuly update order status to cancelled", async () => {
 
   const updatedOrder = await Order.findOne({ _id: order._id });
 
-  expect(updatedOrder!.status).toEqual(Events.Status.OrderStatus.Cancelled);
+  expect(updatedOrder!.status).toEqual(Events.Status.Order.Cancelled);
 });
 
 it("should succesfuly emit OrderCancelled event", async () => {

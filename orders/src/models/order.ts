@@ -6,7 +6,7 @@ import { TicketDocument } from "./ticket";
 
 interface OrderAttributes {
   userId: string;
-  status: Events.Status.OrderStatus;
+  status: Events.Status.Order;
   expiresAt: Date;
   ticket: TicketDocument;
 }
@@ -30,8 +30,8 @@ const ordersSchema = new mongoose.Schema({
   status: {
     type: String,
     required: true,
-    enum: Object.values(Events.Status.OrderStatus),
-    default: Events.Status.OrderStatus.Created,
+    enum: Object.values(Events.Status.Order),
+    default: Events.Status.Order.Created,
   },
   expiresAt: { type: mongoose.Schema.Types.Date },
   ticket: {
@@ -51,7 +51,7 @@ ordersSchema.statics = {
 };
 ordersSchema.methods = {
   setCancelStatus: async function (): Promise<OrderDocument> {
-    this.set("status", Events.Status.OrderStatus.Cancelled);
+    this.set("status", Events.Status.Order.Cancelled);
 
     return this.save();
   },

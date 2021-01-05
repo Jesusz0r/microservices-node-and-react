@@ -6,12 +6,12 @@ import { OrderCancelled } from "../publishers/order-cancelled";
 import { Order } from "../../models";
 import { natsWrapper } from "../../nats-wrapper";
 
-export class ExpirationCompleted extends Events.Listener<Events.EventTypes.ExpirationCompleted> {
+export class ExpirationCompleted extends Events.Listener<Events.Types.ExpirationCompleted> {
   readonly subject = Events.Subjects.ExpirationCompleted;
   queueGroupName = QueueGroupName;
 
   async onMessage(
-    data: Events.EventTypes.ExpirationCompleted["data"],
+    data: Events.Types.ExpirationCompleted["data"],
     message: Message
   ) {
     const { orderId } = data;
@@ -22,11 +22,11 @@ export class ExpirationCompleted extends Events.Listener<Events.EventTypes.Expir
       throw new Errors.NotFoundError();
     }
 
-    if (order.status === Events.Status.OrderStatus.Completed) {
+    if (order.status === Events.Status.Order.Completed) {
       return message.ack();
     }
 
-    order.set("status", Events.Status.OrderStatus.Cancelled);
+    order.set("status", Events.Status.Order.Cancelled);
 
     await order.save();
     await orderCancelledPublisher.publish({

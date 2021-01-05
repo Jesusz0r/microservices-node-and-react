@@ -22,9 +22,7 @@ it("should return order with status 'cancelled' when succesful", async () => {
 
   expect(cancelResponse.body).toHaveProperty("order");
   expect(cancelResponse.body.order).toHaveProperty("status");
-  expect(cancelResponse.body.order.status).toBe(
-    Events.Status.OrderStatus.Cancelled
-  );
+  expect(cancelResponse.body.order.status).toBe(Events.Status.Order.Cancelled);
 });
 
 it("should return not found error if order does not exists", async () => {
@@ -52,7 +50,7 @@ it("should return not authorized error if order does not belong to user", async 
   const order = await Order.build({
     userId: new mongoose.Types.ObjectId().toHexString(),
     ticket,
-    status: Events.Status.OrderStatus.AwaitingPayment,
+    status: Events.Status.Order.AwaitingPayment,
     expiresAt: new Date(),
   });
 

@@ -26,7 +26,7 @@ it("returns an error if the ticket we are using to create an order is reserved",
     ticket,
     expiresAt: new Date(),
     userId: new mongoose.Types.ObjectId().toHexString(),
-    status: Events.Status.OrderStatus.Created,
+    status: Events.Status.Order.Created,
   });
   await request(app)
     .post("/api/orders")
@@ -48,7 +48,7 @@ it("succesfuly reserves a ticket", async () => {
 
   expect(response.body).toHaveProperty("order");
   expect(response.body.order).toHaveProperty("status");
-  expect(response.body.order.status).toBe(Events.Status.OrderStatus.Created);
+  expect(response.body.order.status).toBe(Events.Status.Order.Created);
   expect(response.body.order).toHaveProperty("userId");
   expect(response.body.order).toHaveProperty("expiresAt");
   expect(response.body.order).toHaveProperty("ticket");

@@ -45,7 +45,7 @@ router.post(
 
     const order = await Order.build({
       userId,
-      status: Events.Status.OrderStatus.Created,
+      status: Events.Status.Order.Created,
       expiresAt,
       ticket,
     });
@@ -58,7 +58,7 @@ router.post(
       id: order._id,
       userId,
       version: ticket.version,
-      status: Events.Status.OrderStatus.Created,
+      status: Events.Status.Order.Created,
       expiresAt: order.expiresAt.toISOString(),
       ticket: {
         id: ticket._id,
