@@ -13,21 +13,21 @@ const _App = ({ Component, user, pageProps }) => {
 };
 
 _App.getInitialProps = async ({ ctx, Component }) => {
-  const axios = buildAxiosClient(ctx);
-  const pageProps = Component.getInitialProps
-    ? await Component.getInitialProps(ctx)
-    : null;
-
   try {
+    const axios = buildAxiosClient(ctx);
     const response = await axios.get("/api/users/current");
+    const user = response?.data?.user || {};
+    const pageProps = Component.getInitialProps
+      ? await Component.getInitialProps(ctx, axios, user)
+      : null;
 
     return {
       pageProps,
-      ...response.data,
+      user,
     };
   } catch (error) {
     return {
-      pageProps,
+      pageProps: null,
       user: {},
     };
   }

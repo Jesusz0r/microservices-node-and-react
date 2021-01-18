@@ -24,6 +24,15 @@ const NewTicketForm = () => {
   const changePrice = (e) => {
     setPrice(e.target.value);
   };
+  const onPriceBlur = () => {
+    const value = parseFloat(price);
+
+    if (isNaN(value)) {
+      return;
+    }
+
+    setPrice(value.toFixed(2));
+  };
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -54,6 +63,7 @@ const NewTicketForm = () => {
           name="price"
           className="form-control"
           value={price}
+          onBlur={onPriceBlur}
           onChange={changePrice}
         />
       </div>

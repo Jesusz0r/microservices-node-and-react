@@ -3,17 +3,28 @@ import axios from "axios";
 
 const useRequest = (
   url,
-  { method = "GET", onSuccess = () => {}, onFailure = () => {}, ...options }
+  {
+    method = "GET",
+    data: body,
+    onSuccess = () => {},
+    onFailure = () => {},
+    ...options
+  }
 ) => {
   const [data, setData] = useState(null);
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const doRequest = async () => {
+  const doRequest = async (extraProps = {}) => {
     setLoading(true);
 
     try {
-      const response = await axios({ url, method, ...options });
+      const response = await axios({
+        url,
+        method,
+        data: { ...body, ...extraProps },
+        ...options,
+      });
 
       setData(response.data);
       onSuccess(response.data);

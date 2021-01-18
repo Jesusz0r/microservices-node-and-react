@@ -19,9 +19,17 @@ const Header = ({ user }) => {
               </li>
             </>
           ) : (
-            <li>
-              <Link href="/auth/signout">Signout</Link>
-            </li>
+            <>
+              <li>
+                <Link href="/tickets/new">Sell ticket</Link>
+              </li>
+              <li>
+                <Link href="/orders">My orders</Link>
+              </li>
+              <li>
+                <Link href="/auth/signout">Signout</Link>
+              </li>
+            </>
           )}
         </ul>
       </div>
