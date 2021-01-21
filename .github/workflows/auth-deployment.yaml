@@ -1,0 +1,27 @@
+# name: auth-deployment
+
+# on:
+#   push:
+#     branches:
+#       - master
+#     paths:
+#       - "auth/**"
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@v2
+#       - run: cd auth && docker build . -t jesusz0r/auth
+#       - run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+#         env:
+#           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+#           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+#       - run: docker push jesusz0r/auth
+#       - uses: digitalocean/action-doctl@v2
+#         with:
+#           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+#       - run: doctl kubernetes cluster kubeconfig save $DIGITAL_OCEAN_KUBERNETES_CLUSTER
+#         env:
+#           DIGITAL_OCEAN_KUBERNETES_CLUSTER: ${{ secrets.DIGITAL_OCEAN_KUBERNETES_CLUSTER }}
+#       - run: kubectl rollout restart deployment auth-deployment
